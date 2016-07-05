@@ -28,6 +28,7 @@ class GraphSpec extends FlatSpec {
   val nodeOne = new SimpleNode("One")
   val nodeTwo = new SimpleNode("Two")
   val v1 = Vertex(nodeOne, North, nodeTwo)
+  val v2 = Vertex(nodeTwo, South, nodeOne)
 
   "An empty graph" should "have no nodes" in {
     val builder = GraphBuilder()
@@ -49,6 +50,14 @@ class GraphSpec extends FlatSpec {
     val graph = builder.build()
     val node = graph.move(nodeOne, North)
     assert(node == Some(nodeTwo))
+  }
+
+  "A graph with reciprocal vertices" should "be navigable to and from" in {
+    val builder = GraphBuilder().add(v1).add(v2)
+    val graph = builder.build()
+    val node = graph.move(nodeOne, North)
+    val back = grapg.move(node, South)
+    assert(node == Some(nodeOne))
   }
 
 }
