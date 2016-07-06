@@ -15,6 +15,7 @@
  */
 
 package com.me.jhumble.graph
+import scala.util.Try
 
 // Generalised node for a graph
 trait Node {
@@ -23,11 +24,21 @@ trait Node {
 }
 
 // Possible inter-node directions
-sealed trait Direction
-case object North extends Direction
-case object South extends Direction
-case object East extends Direction
-case object West extends Direction
+sealed trait Direction {
+  val opposite: Direction
+}
+case object North extends Direction {
+  val opposite: Direction = South
+}
+case object South extends Direction {
+  val opposite: Direction = North
+}
+case object East extends Direction {
+  val opposite: Direction = West
+}
+case object West extends Direction {
+  val opposite: Direction = East
+}
 
 // A connection between nodes
 final case class Vertex(from: Node, direction: Direction, to: Node)
@@ -43,8 +54,10 @@ final class GraphBuilder(vs: Set[Vertex]) {
     GraphBuilder(vs + v)
   }
 
-  def build(): Graph = {
-    GraphImpl(vs)
+  def build(): Try[Graph] = {
+    Try(
+      GraphImpl(vs)
+    )
   }
 
 }
@@ -69,6 +82,38 @@ private final class GraphImpl(vs: Set[Vertex]) extends Graph {
 }
 object GraphImpl {
   def apply(vs: Set[Vertex]): Graph = {
+    validate(vs)
     new GraphImpl(vs)
   }
+
+  def validate(vs: Set[Vertex]): Unit = {
+    validateDuplicates(vs)
+    validateOpposites(vs)
+  }
+
+  def validateDuplicates(vs: Set[Vertex]): Unit = {
+    val fromWithDir = vs.map(
+      (v: Vertex) => (v.from, v.direction)
+    )
+    if (fromWithDir.size < vs.size) {
+      // There must have been a duplicate (from, dir) entry.
+      throw new IllegalArgumentException("Duplicated (from, direction) in vertices")
+    }
+  }
+
+  def validateOpposites(vs: Set[Vertex]): Unit = {
+    vs.foreach(
+      (v: Vertex) => validateOpposite(v, vs)
+    )
+  }
+
+  def validateOpposite(v: Vertex, vs: Set[Vertex]) {
+    val Vertex(from, dir, to) = v
+    val mtch = (v: Vertex) => (v.from == to && v.direction == dir.opposite)
+    val found = vs.find(mtch)
+    found.foreach(
+      (v: Vertex) => if (v.to != from) throw new IllegalArgumentException("Contradictory vertices")
+    )
+  }
+
 }
