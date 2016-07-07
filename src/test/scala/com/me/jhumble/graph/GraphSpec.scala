@@ -40,6 +40,7 @@ class GraphSpec extends FlatSpec {
   val v1a = Vertex(nodeOne, North, nodeThree)
   val v1r = Vertex(nodeTwo, South, nodeOne)
   val v1x = Vertex(nodeTwo, South, nodeThree)
+  val v1z = Vertex(nodeOne, West, nodeTwo)
 
   "An empty graph" should "have no nodes" in {
     val builder = GraphBuilder()
@@ -96,7 +97,7 @@ class GraphSpec extends FlatSpec {
     assert(res4 == Some(nodeOne))
   }
 
-  "A graph with a node with two vertices in the same direction to different places" should "fail to build" in {
+  "A graph with a node with two vertices in the same direction" should "fail to build" in {
     val builder = GraphBuilder().add(v1).add(v1a)
     val graph = builder.build()
     assert(graph.isFailure)
@@ -108,4 +109,9 @@ class GraphSpec extends FlatSpec {
     assert(graph.isFailure)
   }
 
+  "A node reaching the same destination using different directions" should "fail to build" in {
+    val builder = GraphBuilder().add(v1).add(v1z)
+    val graph = builder.build()
+    assert(graph.isFailure)
+  }
 }

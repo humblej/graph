@@ -87,33 +87,30 @@ object GraphImpl {
   }
 
   def validate(vs: Set[Vertex]): Unit = {
-    validateDuplicates(vs)
-    validateOpposites(vs)
-  }
-
-  def validateDuplicates(vs: Set[Vertex]): Unit = {
-    val fromWithDir = vs.map(
-      (v: Vertex) => (v.from, v.direction)
-    )
-    if (fromWithDir.size < vs.size) {
-      // There must have been a duplicate (from, dir) entry.
-      throw new IllegalArgumentException("Duplicated (from, direction) in vertices")
+    val vertexCombinations = vs.toList.combinations(2)
+    val illegalVertex = (vs: List[Vertex]) => {
+      val List(v1, v2) = vs
+      duplicateVertex(v1, v2) || contradictoryOpposites(v1, v2) || contradictoryVertices(v1, v2)
+    }
+    if (vertexCombinations.exists(illegalVertex)) {
+      throw new IllegalArgumentException("Inconsistent graph.")
     }
   }
 
-  def validateOpposites(vs: Set[Vertex]): Unit = {
-    vs.foreach(
-      (v: Vertex) => validateOpposite(v, vs)
-    )
+  // Same starting node and direction
+  def duplicateVertex(v1: Vertex, v2: Vertex): Boolean = {
+    (v1.from == v2.from) && (v1.direction == v2.direction)
   }
 
-  def validateOpposite(v: Vertex, vs: Set[Vertex]) {
-    val Vertex(from, dir, to) = v
-    val mtch = (v: Vertex) => (v.from == to && v.direction == dir.opposite)
-    val found = vs.find(mtch)
-    found.foreach(
-      (v: Vertex) => if (v.to != from) throw new IllegalArgumentException("Contradictory vertices")
-    )
+  // e.g. going North then South doesn't bring you back to the same place.
+  def contradictoryOpposites(v1: Vertex, v2: Vertex): Boolean = {
+    val Vertex(from, dir, end) = v1
+    v2.from == end && v2.direction == v1.direction.opposite && v2.to != from
   }
 
+  // Going in different directions from the same place leads to the same destination.
+  def contradictoryVertices(v1: Vertex, v2: Vertex): Boolean = {
+    val Vertex(from, dir, end) = v1
+    v2.from == from && v2.direction != v1.direction && v2.to == end
+  }
 }
