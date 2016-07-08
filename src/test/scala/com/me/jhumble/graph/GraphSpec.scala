@@ -41,6 +41,7 @@ class GraphSpec extends FlatSpec {
   val v1r = Vertex(nodeTwo, South, nodeOne)
   val v1x = Vertex(nodeTwo, South, nodeThree)
   val v1z = Vertex(nodeOne, West, nodeTwo)
+  val vloop = Vertex(nodeOne, West, nodeOne)
 
   "An empty graph" should "have no nodes" in {
     val builder = GraphBuilder()
@@ -111,6 +112,12 @@ class GraphSpec extends FlatSpec {
 
   "A node reaching the same destination using different directions" should "fail to build" in {
     val builder = GraphBuilder().add(v1).add(v1z)
+    val graph = builder.build()
+    assert(graph.isFailure)
+  }
+
+  "A graph with a vertex loop" should "fail to build" in {
+    val builder = GraphBuilder().add(v1).add(vloop)
     val graph = builder.build()
     assert(graph.isFailure)
   }

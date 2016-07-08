@@ -87,14 +87,22 @@ object GraphImpl {
   }
 
   def validate(vs: Set[Vertex]): Unit = {
+    if (illegalVertices(vs) || illegalCombinations(vs)) {
+      throw new IllegalArgumentException("Inconsistent Graph")
+    }
+  }
+
+  def illegalVertices(vs: Set[Vertex]) = {
+    vs.exists(loopingVertex)
+  }
+
+  def illegalCombinations(vs: Set[Vertex]): Boolean = {
     val vertexCombinations = vs.toList.combinations(2)
     val illegalVertex = (vs: List[Vertex]) => {
       val List(v1, v2) = vs
       duplicateVertex(v1, v2) || contradictoryOpposites(v1, v2) || contradictoryVertices(v1, v2)
     }
-    if (vertexCombinations.exists(illegalVertex)) {
-      throw new IllegalArgumentException("Inconsistent graph.")
-    }
+    vertexCombinations.exists(illegalVertex)
   }
 
   // Same starting node and direction
@@ -112,5 +120,10 @@ object GraphImpl {
   def contradictoryVertices(v1: Vertex, v2: Vertex): Boolean = {
     val Vertex(from, dir, end) = v1
     v2.from == from && v2.direction != v1.direction && v2.to == end
+  }
+
+  // Vertext that starts and ends in the same place.
+  def loopingVertex(v1: Vertex): Boolean = {
+    v1.from == v1.to
   }
 }
