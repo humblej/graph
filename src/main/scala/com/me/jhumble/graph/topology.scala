@@ -49,23 +49,25 @@ trait Topology {
 }
 
 // A builder for graphs
-final class TopologyBuilder {
-  import scala.collection.mutable.{ SetBuilder, HashSet }
-  private val bd = new SetBuilder[Vertex, HashSet[Vertex]](HashSet[Vertex]())
+final class TopologyBuilder(vs: Set[Vertex]) {
+
   def add(v: Vertex): TopologyBuilder = {
-    bd += v
+    TopologyBuilder(vs + v)
   }
 
   def build(): Try[Topology] = {
     Try(
-      TopologyImpl(bd.result)
+      TopologyImpl(vs)
     )
   }
 
 }
 object TopologyBuilder {
   def apply(): TopologyBuilder = {
-    new TopologyBuilder()
+    new TopologyBuilder(Set())
+  }
+  def apply(vs: Set[Vertex]): TopologyBuilder = {
+    new TopologyBuilder(vs)
   }
 }
 
