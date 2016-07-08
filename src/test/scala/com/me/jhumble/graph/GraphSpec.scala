@@ -53,7 +53,7 @@ class TopologySpec extends FlatSpec {
   "An empty Topology" should "have not be navigable" in {
     val builder = TopologyBuilder()
     val Topology = builder.build().get
-    val node = Topology.move(nodeOne, North)
+    val node = Topology.destination(nodeOne, North)
     assert(node == None)
   }
 
@@ -68,32 +68,32 @@ class TopologySpec extends FlatSpec {
   "A Topology with one vertex" should "be navigable using the correct direction" in {
     val builder = TopologyBuilder().add(v1)
     val Topology = builder.build().get
-    val node = Topology.move(nodeOne, North)
+    val node = Topology.destination(nodeOne, North)
     assert(node == Some(nodeTwo))
   }
 
   "A Topology with one vertex" should "be not be navigable in the wrong direction" in {
     val builder = TopologyBuilder().add(v1)
     val Topology = builder.build().get
-    val node = Topology.move(nodeOne, East)
+    val node = Topology.destination(nodeOne, East)
     assert(node == None)
   }
 
   "A Topology with reciprocal vertices" should "be navigable to and from" in {
     val builder = TopologyBuilder().add(v1).add(v1r)
     val Topology = builder.build().get
-    val node = Topology.move(nodeOne, North)
-    val back = Topology.move(node.get, South)
+    val node = Topology.destination(nodeOne, North)
+    val back = Topology.destination(node.get, South)
     assert(back == Some(nodeOne))
   }
 
   "A Topology with a cycle" should "be navigable" in {
     val builder = TopologyBuilder().add(v1).add(v2).add(v3).add(v4).add(v5)
     val Topology = builder.build().get
-    val res1 = Topology.move(nodeOne, North)
-    val res2 = Topology.move(res1.get, West)
-    val res3 = Topology.move(res2.get, South)
-    val res4 = Topology.move(res3.get, East)
+    val res1 = Topology.destination(nodeOne, North)
+    val res2 = Topology.destination(res1.get, West)
+    val res3 = Topology.destination(res2.get, South)
+    val res4 = Topology.destination(res3.get, East)
 
     assert(res4 == Some(nodeOne))
   }
