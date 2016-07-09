@@ -3,8 +3,9 @@ lazy val graph = project
   .enablePlugins(AutomateHeaderPlugin, GitVersioning)
 
 libraryDependencies ++= Vector(
-  Library.scalaTest % "test"
+  Library.scalaTest % "test",
+  Library.json4sNative
 )
 
-initialCommands := """|import com.me.jhumble.graph._
+initialCommands := """|import com.me.jhumble.topology._
                       |""".stripMargin
