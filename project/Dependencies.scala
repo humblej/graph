@@ -8,5 +8,4 @@ object Version {
 object Library {
   val scalaTest = "org.scalatest" %% "scalatest" % Version.ScalaTest
   val json4sNative = "org.json4s" %% "json4s-native" % "3.4.0"
-
 }

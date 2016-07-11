@@ -1,0 +1,72 @@
+{
+  "name": "Simple",
+  "places": [
+    {
+      "id": 1,
+      "view": "Room 1",
+      "description": "You are in room one",
+      "routes": [
+        {
+          "direction": "N",
+          "destination": 2
+        },
+        {
+          "direction": "S",
+          "destination": 3
+        },
+        {
+          "direction": "E",
+          "destination": 4
+        },
+        {
+          "direction": "W",
+          "destination": 5
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "view": "Room 2",
+      "description": "You are in room two",
+      "routes": [
+        {
+          "direction": "S",
+          "destination": 1
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "view": "Room 3",
+      "description": "You are in room three",
+      "routes": [
+        {
+          "direction": "N",
+          "destination": 1
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "view": "Room 4",
+      "description": "You are in room four",
+      "routes": [
+        {
+          "direction": "W",
+          "destination": 1
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "view": "Room 5",
+      "description": "You are in room five",
+      "routes": [
+        {
+          "direction": "E",
+          "destination": 1
+        }
+      ]
+    }
+  ]
+}
