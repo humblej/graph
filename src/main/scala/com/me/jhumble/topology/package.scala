@@ -23,6 +23,4 @@ package object topology {
   type Seq[+A] = scala.collection.immutable.Seq[A]
   type IndexedSeq[+A] = scala.collection.immutable.IndexedSeq[A]
 
-  type MapTopology = Topology { type N = Location }
-
 }

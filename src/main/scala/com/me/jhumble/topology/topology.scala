@@ -17,11 +17,7 @@
 package com.me.jhumble.topology
 import scala.util.Try
 
-// Generalised node for a graph
-trait Node {
-  type T
-  val element: T
-}
+final case class Node(id: Int)
 
 // Possible inter-node directions
 sealed trait Direction {

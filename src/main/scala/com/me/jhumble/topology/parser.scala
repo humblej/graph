@@ -19,7 +19,6 @@ package com.me.jhumble.topology
 import scala.util._
 import org.json4s._
 import org.json4s.native.JsonMethods._
-import scala.collection._
 
 // Case classes for parsing the JSON files.
 final case class Route(direction: String, destination: Int)
@@ -27,7 +26,7 @@ final case class Place(id: Int, view: String, description: String, routes: List[
 final case class World(name: String, places: List[Place])
 
 // Internal representation of a file
-final case class BluePrint(name: String, places: collection.Map[Int, Place], links: immutable.Set[(Int, String, Int)]) {
+final case class BluePrint(name: String, places: Map[Int, Place], links: Set[(Int, String, Int)]) {
   // Make sure each end of the links is a key in the places map and that the direction is valid.
   def validate(): Boolean = {
     links.forall(
