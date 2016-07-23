@@ -21,7 +21,7 @@ object ResourceLoader {
 
   def load(name: String): Option[String] = {
     val url = getClass.getResource("/" + name + ".json")
-    if (url != null) {
+    if (url != null) { // scalastyle:ignore
       val source = Source.fromURL(url)
       Some(source.mkString)
     } else {

@@ -20,16 +20,11 @@ import org.scalatest.FlatSpec
 
 class TopologySpec extends FlatSpec {
 
-  class SimpleNode(e: String) extends Node {
-    type T = String
-    val element: String = e
-  }
-
-  val nodeOne = new SimpleNode("One")
-  val nodeTwo = new SimpleNode("Two")
-  val nodeThree = new SimpleNode("Three")
-  val nodeFour = new SimpleNode("Four")
-  val nodeFive = new SimpleNode("Five")
+  val nodeOne = new Node(1)
+  val nodeTwo = new Node(2)
+  val nodeThree = new Node(3)
+  val nodeFour = new Node(4)
+  val nodeFive = new Node(5)
 
   val v1 = Vertex(nodeOne, North, nodeTwo)
   val v2 = Vertex(nodeTwo, West, nodeThree)

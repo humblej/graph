@@ -16,13 +16,6 @@
 
 package com.me.jhumble.space
 
-object Space {
-  def worlds: Set[String] = {
-    Set()
-  }
-
-  def getWorld(name: String): String = {
-    "Bob"
-  }
-
+object Boot extends App {
+  println("Hello Space")
 }

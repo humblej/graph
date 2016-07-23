@@ -96,7 +96,7 @@ object TopologyImpl {
     }
   }
 
-  def illegalVertices(vs: Set[Vertex]) = {
+  def illegalVertices(vs: Set[Vertex]): Boolean = {
     vs.exists(loopingVertex)
   }
 
