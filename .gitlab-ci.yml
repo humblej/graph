@@ -1,0 +1,25 @@
+types:
+  - pre
+  - build
+  - test
+  - deploy
+
+pre:
+  type: pre
+  script:
+    - sbt scalastyle
+
+build:
+  type: build
+  script:
+    - sbt compile
+
+test:
+  type: test
+  script:
+    - sbt test
+
+deploy:
+  type: deploy
+  script:
+    - ansible-playbook deploy.yml

@@ -16,7 +16,6 @@ libraryDependencies ++= Vector(
 
 mainClass in Compile := Some("com.me.jhumble.space.Boot")
 
-
 dockerfile in docker := {
   val jarFile: File = sbt.Keys.`package`.in(Compile, packageBin).value
   val classpath = (managedClasspath in Compile).value
